@@ -5,28 +5,28 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-type Greeter struct {
+type RealWorld struct {
 	Hello string
 }
 
-type GreeterRepo interface {
-	CreateGreeter(context.Context, *Greeter) error
-	UpdateGreeter(context.Context, *Greeter) error
+type RealWorldRepo interface {
+	CreateRealWorld(context.Context, *RealWorld) error
+	UpdateRealWorld(context.Context, *RealWorld) error
 }
 
-type GreeterUsecase struct {
-	repo GreeterRepo
+type RealWorldUsecase struct {
+	repo RealWorldRepo
 	log  *log.Helper
 }
 
-func NewGreeterUsecase(repo GreeterRepo, logger log.Logger) *GreeterUsecase {
-	return &GreeterUsecase{repo: repo, log: log.NewHelper(logger)}
+func NewRealWorldUsecase(repo RealWorldRepo, logger log.Logger) *RealWorldUsecase {
+	return &RealWorldUsecase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (uc *GreeterUsecase) Create(ctx context.Context, g *Greeter) error {
-	return uc.repo.CreateGreeter(ctx, g)
+func (uc *RealWorldUsecase) Create(ctx context.Context, g *RealWorld) error {
+	return uc.repo.CreateRealWorld(ctx, g)
 }
 
-func (uc *GreeterUsecase) Update(ctx context.Context, g *Greeter) error {
-	return uc.repo.UpdateGreeter(ctx, g)
+func (uc *RealWorldUsecase) Update(ctx context.Context, g *RealWorld) error {
+	return uc.repo.UpdateRealWorld(ctx, g)
 }

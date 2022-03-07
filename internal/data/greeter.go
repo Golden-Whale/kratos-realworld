@@ -2,27 +2,27 @@ package data
 
 import (
 	"context"
-	"kratos-realworld/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
+	"kratos-realworld/internal/biz"
 )
 
-type greeterRepo struct {
+type realworldRepo struct {
 	data *Data
 	log  *log.Helper
 }
 
-// NewGreeterRepo .
-func NewGreeterRepo(data *Data, logger log.Logger) biz.GreeterRepo {
-	return &greeterRepo{
+// NewRealWorldRepo .
+func NewRealWorldRepo(data *Data, logger log.Logger) biz.RealWorldRepo {
+	return &realworldRepo{
 		data: data,
 		log:  log.NewHelper(logger),
 	}
 }
 
-func (r *greeterRepo) CreateGreeter(ctx context.Context, g *biz.Greeter) error {
+func (r *realworldRepo) CreateRealWorld(ctx context.Context, g *biz.RealWorld) error {
 	return nil
 }
 
-func (r *greeterRepo) UpdateGreeter(ctx context.Context, g *biz.Greeter) error {
+func (r *realworldRepo) UpdateRealWorld(ctx context.Context, g *biz.RealWorld) error {
 	return nil
 }

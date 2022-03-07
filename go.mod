@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/go-kratos/kratos/v2 v2.2.0
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/wire v0.5.0
 	google.golang.org/genproto v0.0.0-20220222213610-43724f9ea8cf
 	google.golang.org/grpc v1.44.0
