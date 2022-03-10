@@ -26,7 +26,6 @@ service RealWorld {
   rpc GetCurrentUser(GetCurrentUserRequest) returns (UserReply) {
     option (google.api.http) = {
       get: "/api/user",
-      body: "*"
     };
   }
   // 更新用户
@@ -46,6 +45,7 @@ service RealWorld {
   rpc FollowUser(FollowUserRequest) returns (ProfileReply){
     option (google.api.http) = {
       post: "/api/profiles/{username}/follow",
+      body: "*"
     };
   }
   // 取消关注用户
@@ -83,6 +83,7 @@ service RealWorld {
   rpc UpdateArticle(UpdateArticleRequest) returns (SingleArticleReply) {
     option (google.api.http) = {
       put: "/api/articles/(slug)"
+      body: "*"
     };
   }
   // 删除文章
@@ -114,6 +115,7 @@ service RealWorld {
   rpc FavoriteArticle(FollowArticleRequest) returns (ProfileReply){
     option (google.api.http) = {
       post: "/api/articles/{slug}/favorite",
+      body: "*"
     };
   }
   // 取消喜欢文章

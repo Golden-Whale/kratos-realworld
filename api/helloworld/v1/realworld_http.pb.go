@@ -103,7 +103,7 @@ func _RealWorld_Register0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Co
 func _RealWorld_GetCurrentUser0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetCurrentUserRequest
-		if err := ctx.Bind(&in); err != nil {
+		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, "/realworld.v1.RealWorld/GetCurrentUser")
@@ -163,7 +163,7 @@ func _RealWorld_GetProfile0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.
 func _RealWorld_FollowUser0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in FollowUserRequest
-		if err := ctx.BindQuery(&in); err != nil {
+		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
@@ -286,7 +286,7 @@ func _RealWorld_CreateArticle0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx ht
 func _RealWorld_UpdateArticle0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in UpdateArticleRequest
-		if err := ctx.BindQuery(&in); err != nil {
+		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, "/realworld.v1.RealWorld/UpdateArticle")
@@ -387,7 +387,7 @@ func _RealWorld_DeleteComments0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx h
 func _RealWorld_FavoriteArticle0_HTTP_Handler(srv RealWorldHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in FollowArticleRequest
-		if err := ctx.BindQuery(&in); err != nil {
+		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
@@ -532,10 +532,10 @@ func (c *RealWorldHTTPClientImpl) DeleteComments(ctx context.Context, in *Delete
 func (c *RealWorldHTTPClientImpl) FavoriteArticle(ctx context.Context, in *FollowArticleRequest, opts ...http.CallOption) (*ProfileReply, error) {
 	var out ProfileReply
 	pattern := "/api/articles/{slug}/favorite"
-	path := binding.EncodeURL(pattern, in, true)
+	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/realworld.v1.RealWorld/FavoriteArticle"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -558,10 +558,10 @@ func (c *RealWorldHTTPClientImpl) FeedArticles(ctx context.Context, in *FeedArti
 func (c *RealWorldHTTPClientImpl) FollowUser(ctx context.Context, in *FollowUserRequest, opts ...http.CallOption) (*ProfileReply, error) {
 	var out ProfileReply
 	pattern := "/api/profiles/{username}/follow"
-	path := binding.EncodeURL(pattern, in, true)
+	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/realworld.v1.RealWorld/FollowUser"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -597,10 +597,10 @@ func (c *RealWorldHTTPClientImpl) GetComments(ctx context.Context, in *GetCommen
 func (c *RealWorldHTTPClientImpl) GetCurrentUser(ctx context.Context, in *GetCurrentUserRequest, opts ...http.CallOption) (*UserReply, error) {
 	var out UserReply
 	pattern := "/api/user"
-	path := binding.EncodeURL(pattern, in, false)
+	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/realworld.v1.RealWorld/GetCurrentUser"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -701,10 +701,10 @@ func (c *RealWorldHTTPClientImpl) UnFollowUser(ctx context.Context, in *UnFollow
 func (c *RealWorldHTTPClientImpl) UpdateArticle(ctx context.Context, in *UpdateArticleRequest, opts ...http.CallOption) (*SingleArticleReply, error) {
 	var out SingleArticleReply
 	pattern := "/api/articles/(slug)"
-	path := binding.EncodeURL(pattern, in, true)
+	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/realworld.v1.RealWorld/UpdateArticle"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "PUT", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
