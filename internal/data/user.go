@@ -11,6 +11,14 @@ type userRepo struct {
 	log  *log.Helper
 }
 
+func (u userRepo) GetUserByEmail(ctx context.Context, email string) (*biz.User, error) {
+	return nil, nil
+}
+
+func (u userRepo) CreateUser(ctx *context.Context, user *biz.User) error {
+	return nil
+}
+
 type profileRepo struct {
 	data *Data
 	log  *log.Helper
@@ -29,8 +37,4 @@ func NewProfileRepo(data *Data, logger log.Logger) biz.ProfileRepo {
 		data: data,
 		log:  log.NewHelper(logger),
 	}
-}
-
-func (u userRepo) CreateUser(ctx *context.Context, user *biz.User) error {
-	return nil
 }
