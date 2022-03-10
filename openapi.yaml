@@ -67,11 +67,12 @@ paths:
                 - RealWorld
             description: 更新文章
             operationId: RealWorld_UpdateArticle
-            parameters:
-                - name: slug
-                  in: query
-                  schema:
-                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateArticleRequest'
+                required: true
             responses:
                 "200":
                     description: OK
@@ -219,6 +220,12 @@ paths:
                   required: true
                   schema:
                     type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FollowArticleRequest'
+                required: true
             responses:
                 "200":
                     description: OK
@@ -275,6 +282,12 @@ paths:
                   required: true
                   schema:
                     type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FollowUserRequest'
+                required: true
             responses:
                 "200":
                     description: OK
@@ -319,12 +332,6 @@ paths:
                 - RealWorld
             description: 获取用户
             operationId: RealWorld_GetCurrentUser
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/GetCurrentUserRequest'
-                required: true
             responses:
                 "200":
                     description: OK
@@ -420,10 +427,16 @@ components:
                     type: array
                     items:
                         type: string
-        GetCurrentUserRequest:
+        FollowArticleRequest:
             type: object
-            properties: {}
-            description: 获取用户
+            properties:
+                slug:
+                    type: string
+        FollowUserRequest:
+            type: object
+            properties:
+                username:
+                    type: string
         LoginRequest:
             type: object
             properties:
@@ -626,6 +639,11 @@ components:
                     type: array
                     items:
                         type: string
+        UpdateArticleRequest:
+            type: object
+            properties:
+                slug:
+                    type: string
         UpdateUserRequest:
             type: object
             properties:
