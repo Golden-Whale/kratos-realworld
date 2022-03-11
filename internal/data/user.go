@@ -11,11 +11,11 @@ type userRepo struct {
 	log  *log.Helper
 }
 
-func (u userRepo) GetUserByEmail(ctx context.Context, email string) (*biz.User, error) {
+func (u *userRepo) GetUserByEmail(ctx context.Context, email string) (*biz.User, error) {
 	return nil, nil
 }
 
-func (u userRepo) CreateUser(ctx *context.Context, user *biz.User) error {
+func (u *userRepo) CreateUser(ctx context.Context, user *biz.User) error {
 	return nil
 }
 

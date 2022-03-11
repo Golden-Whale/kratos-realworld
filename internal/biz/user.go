@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	"golang.org/x/crypto/bcrypt"
+	"kratos-realworld/internal/conf"
+	"kratos-realworld/pkg/middleware/auth"
 )
 
 type User struct {
@@ -42,7 +44,7 @@ func verifyPassword(hashed, input string) bool {
 }
 
 type UserRepo interface {
-	CreateUser(ctx *context.Context, user *User) error
+	CreateUser(ctx context.Context, user *User) error
 	GetUserByEmail(ctx context.Context, email string) (*User, error)
 }
 
@@ -53,14 +55,19 @@ type UserUsecase struct {
 	ur UserRepo
 	pr ProfileRepo
 
-	log *log.Helper
+	jwtConf *conf.JWT
+	log     *log.Helper
 }
 
-func NewUserUsecase(ur UserRepo, pr ProfileRepo, logger log.Logger) *UserUsecase {
-	return &UserUsecase{ur: ur, pr: pr, log: log.NewHelper(logger)}
+func NewUserUsecase(ur UserRepo, pr ProfileRepo, jwtConf *conf.JWT, logger log.Logger) *UserUsecase {
+	return &UserUsecase{ur: ur, pr: pr, jwtConf: jwtConf, log: log.NewHelper(logger)}
 }
 
-func (uc *UserUsecase) Register(ctx *context.Context, username, email, password string) (*UserLogin, error) {
+func (uc *UserUsecase) generateToken(username string) string {
+	return auth.GenerateToken(uc.jwtConf.Secret, username)
+}
+
+func (uc *UserUsecase) Register(ctx context.Context, username, email, password string) (*UserLogin, error) {
 	user := &User{
 		Email:        email,
 		Username:     username,
@@ -72,7 +79,7 @@ func (uc *UserUsecase) Register(ctx *context.Context, username, email, password 
 	}
 	return &UserLogin{
 		Email:    email,
-		Token:    "xx",
+		Token:    uc.generateToken(user.Username),
 		Username: username,
 	}, nil
 }
@@ -87,7 +94,7 @@ func (uc *UserUsecase) Login(ctx context.Context, email, password string) (*User
 	}
 	return &UserLogin{
 		Email:    u.Email,
-		Token:    "xxx",
+		Token:    uc.generateToken(u.Username),
 		Username: u.Username,
 		Bio:      u.Bio,
 		Image:    u.Image,
